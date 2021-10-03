@@ -1,0 +1,247 @@
+" WELCOME TO ADDRESSBOOK SYSTEM MYSQL"
+
+-------------------------------------------------------------------------------------------
+#UC-1 Ability to create a Address Book Service DB
+-------------------------------------------------------------------------------------------
+
+create database addressbook_service;
+
+ show databases;
++---------------------+
+| Database            |
++---------------------+
+| addressbook_service |
+| information_schema  |
+| mysql               |
+| payroll_service     |
+| performance_schema  |
+| person_info         |
+| sakila              |
+| sys                 |
+| world               |
++---------------------+
+
+-------------------------------------------------------------------------------------------
+#UC-2 Ability to create a Address Book Table.
+-------------------------------------------------------------------------------------------
+
+USE addressbook_service;
+
+create table addressbook(
+	FIRST_NAME varchar(50) NOT NULL,
+    LAST_NAME varchar(50) NOT NULL,
+    ADDRESS varchar(150) NOT NULL,
+    CITY varchar(50) NOT NULL,
+    STATE varchar(50) NOT NULL,
+    ZIP_CODE int NOT NULL,
+    PHONE_NUMBER bigint(20) NOT NULL,
+    EMAIL varchar(30) NOT NULL
+    );
+
+ Describe Addressbook;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| FIRST_NAME   | varchar(50)  | NO   |     | NULL    |       |
+| LAST_NAME    | varchar(50)  | NO   |     | NULL    |       |
+| ADDRESS      | varchar(150) | NO   |     | NULL    |       |
+| CITY         | varchar(50)  | NO   |     | NULL    |       |
+| STATE        | varchar(50)  | NO   |     | NULL    |       |
+| ZIP_CODE     | int          | NO   |     | NULL    |       |
+| PHONE_NUMBER | bigint       | NO   |     | NULL    |       |
+| EMAIL        | varchar(30)  | NO   |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+
+-------------------------------------------------------------------------------------------
+#UC-3 Ability to insert new Contacts to Address Book
+-------------------------------------------------------------------------------------------
+
+insert into addressbook
+	(FIRST_NAME,LAST_NAME,ADDRESS,CITY,STATE,ZIP_CODE,PHONE_NUMBER,EMAIL)values
+    ('Abhishek','Pachkawade','Yavatmal','Yavatmal','MAHARASHTRA',445001,7900000030,'abhishek@gmail.com'),
+    ('Pranv','Patil','MUMBAI','MUMBAI','MAHARASHTRA',425001,8200000089,'pranv@gmail.com');
+    
+select * from addressbook;
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+| FIRST_NAME | LAST_NAME  | ADDRESS  | CITY     | STATE       | ZIP_CODE | PHONE_NUMBER | EMAIL              |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+| Abhishek   | Pachkawade | Yavatmal | Yavatmal | MAHARASHTRA |   445001 |   7900000030 | abhishek@gmail.com |
+| Pranv      | Patil      | MUMBAI   | MUMBAI   | MAHARASHTRA |   425001 |   8200000089 | pranv@gmail.com    |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+
+
+-------------------------------------------------------------------------------------------
+#UC-4 Ability to edit existing contact person using their name
+-------------------------------------------------------------------------------------------
+
+UPDATE addressbook set ZIP_CODE = 4450123 where FIRST_NAME = 'Pranv';
+
+select * from addressbook;
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+| FIRST_NAME | LAST_NAME  | ADDRESS  | CITY     | STATE       | ZIP_CODE | PHONE_NUMBER | EMAIL              |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+| Abhishek   | Pachkawade | Yavatmal | Yavatmal | MAHARASHTRA |   445001 |   7900000030 | abhishek@gmail.com |
+| Pranv      | Patil      | MUMBAI   | MUMBAI   | MAHARASHTRA |  4450123 |   8200000089 | pranv@gmail.com    |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+
+
+-------------------------------------------------------------------------------------------
+#UC-5 Ability to delete a person using person's name
+-------------------------------------------------------------------------------------------
+
+Delete From addressbook where First_name ='Pranv';
+
+select * from addressbook;
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+| FIRST_NAME | LAST_NAME  | ADDRESS  | CITY     | STATE       | ZIP_CODE | PHONE_NUMBER | EMAIL              |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+| Abhishek   | Pachkawade | Yavatmal | Yavatmal | MAHARASHTRA |   445001 |   7900000030 | abhishek@gmail.com |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+
+
+-------------------------------------------------------------------------------------------
+#UC-6 Ability to Retrieve Person belonging to a City or State from the Address Book
+-------------------------------------------------------------------------------------------
+
+insert into addressbook
+	(FIRST_NAME,LAST_NAME,ADDRESS,CITY,STATE,ZIP_CODE,PHONE_NUMBER,EMAIL)values
+    ('Pranav','Patil','MUMBAI','MUMBAI','MAHARASHTRA',425001,8200000089,'pranv@gmail.com');
+
+select * from addressbook;
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+| FIRST_NAME | LAST_NAME  | ADDRESS  | CITY     | STATE       | ZIP_CODE | PHONE_NUMBER | EMAIL              |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+| Abhishek   | Pachkawade | Yavatmal | Yavatmal | MAHARASHTRA |   445001 |   7900000030 | abhishek@gmail.com |
+| Pranav     | Patil      | MUMBAI   | MUMBAI   | MAHARASHTRA |   425001 |   8200000089 | pranv@gmail.com    |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+
+
+ select FIRST_NAME from addressbook where CITY = 'Yavatmal';
++------------+
+| FIRST_NAME |
++------------+
+| Abhishek   |
++------------+
+
+select FIRST_NAME from addressbook where CITY = 'MUMBAI';
++------------+
+| FIRST_NAME |
++------------+
+| Pranav     |
++------------+
+
+select FIRST_NAME from addressbook where STATE = 'MAHARASHTRA';
++------------+
+| FIRST_NAME |
++------------+
+| Abhishek   |
+| Pranav     |
++------------+
+
+
+-------------------------------------------------------------------------------------------
+#UC-7 Ability to understand the size of address book by City and State
+-------------------------------------------------------------------------------------------
+
+select count(FIRST_NAME) from addressbook where CITY = 'Yavatmal';
++-------------------+
+| count(FIRST_NAME) |
++-------------------+
+|                 1 |
++-------------------+
+
+select count(FIRST_NAME) from addressbook where CITY = 'MUMBAI';
++-------------------+
+| count(FIRST_NAME) |
++-------------------+
+|                 1 |
++-------------------+
+
+select count(FIRST_NAME) from addressbook where STATE = 'MAHARASHTRA';
++-------------------+
+| count(FIRST_NAME) |
++-------------------+
+|                 2 |
++-------------------+
+
+-------------------------------------------------------------------------------------------
+#UC-8 Ability to retrieve entries sorted alphabetically by Person’s name for a given city
+-------------------------------------------------------------------------------------------
+select FIRST_NAME from addressbook order by CITY ;
++------------+
+| FIRST_NAME |
++------------+
+| Pranav     |
+| Abhishek   |
++------------+
+
+
+
+-------------------------------------------------------------------------------------------
+#UC-9 Ability to identify each Address Book with name and Type.
+-------------------------------------------------------------------------------------------
+
+ Alter table addressbook add TYPE varchar(50) NOT NULL after EMAIL;
+select * from addressbook;
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+------+
+| FIRST_NAME | LAST_NAME  | ADDRESS  | CITY     | STATE       | ZIP_CODE | PHONE_NUMBER | EMAIL              | TYPE |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+------+
+| Abhishek   | Pachkawade | Yavatmal | Yavatmal | MAHARASHTRA |   445001 |   7900000030 | abhishek@gmail.com |      |
+| Pranav     | Patil      | MUMBAI   | MUMBAI   | MAHARASHTRA |   425001 |   8200000089 | pranv@gmail.com    |      |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+------+
+
+update addressbook set TYPE = 'FAMILY' where FIRST_NAME = 'Abhishek';
+update addressbook set TYPE = 'FRIEND' where FIRST_NAME = 'Pranav';
+
+ select FIRST_NAME from addressbook where TYPE = 'FAMILY';
++------------+
+| FIRST_NAME |
++------------+
+| Abhishek   |
++------------+
+
+ select FIRST_NAME from addressbook where TYPE = 'Friend';
++------------+
+| FIRST_NAME |
++------------+
+| Pranav     |
++------------+
+
+
+-------------------------------------------------------------------------------------------
+#UC-10 Ability to get number of contact persons
+-------------------------------------------------------------------------------------------
+
+ select FIRST_NAME,PHONE_NUMBER from addressbook where TYPE = 'Family';
++------------+--------------+
+| FIRST_NAME | PHONE_NUMBER |
++------------+--------------+
+| Abhishek   |   7900000030 |
++------------+--------------+
+
+select FIRST_NAME,PHONE_NUMBER from addressbook where TYPE = 'FRIEND';
++------------+--------------+
+| FIRST_NAME | PHONE_NUMBER |
++------------+--------------+
+| Pranav     |   8200000089 |
++------------+--------------+
+
+-------------------------------------------------------------------------------------------
+#UC-11 Ability to add person to both Friend and Family
+-------------------------------------------------------------------------------------------
+insert into addressbook(FIRST_NAME,LAST_NAME,ADDRESS,CITY,STATE,ZIP_CODE,PHONE_NUMBER,EMAIL,TYPE)values
+ ('RAM','PATIL','Nagpur','Nagpur','MAHARASHTRA',455001,7905426201,'ram@gmail.com','FAMILY'),
+ ('RAM','PATIL','Nagpur','Nagpur','MAHARASHTRA',455001,7905426201,'ram@gmail.com','FRIEND');
+
+select * from addressbook;
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+--------+
+| FIRST_NAME | LAST_NAME  | ADDRESS  | CITY     | STATE       | ZIP_CODE | PHONE_NUMBER | EMAIL              | TYPE   |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+--------+
+| Abhishek   | Pachkawade | Yavatmal | Yavatmal | MAHARASHTRA |   445001 |   7900000030 | abhishek@gmail.com | FAMILY |
+| Pranav     | Patil      | MUMBAI   | MUMBAI   | MAHARASHTRA |   425001 |   8200000089 | pranv@gmail.com    | FRIEND |
+| RAM        | PATIL      | Nagpur   | Nagpur   | MAHARASHTRA |   455001 |   7905426201 | ram@gmail.com      | FAMILY |
+| RAM        | PATIL      | Nagpur   | Nagpur   | MAHARASHTRA |   455001 |   7905426201 | ram@gmail.com      | FRIEND |
++------------+------------+----------+----------+-------------+----------+--------------+--------------------+--------+
+
+
+
+
